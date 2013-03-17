@@ -1,4 +1,5 @@
 package Zabbix::API::Simple::Web::Plugin::AddHostSimple;
+# ABSTRACT: Example plugin for adding an host
 
 use 5.010_000;
 use mro 'c3';
@@ -50,18 +51,18 @@ sub _init_alias { return 'add_host_simple'; }
 sub execute {
     my $self = shift;
     my $request = shift;
-    
+
     return unless $request->{'hostname'};
     my $hostname = $request->{'hostname'};
-    
+
     my $data = {};
-    
+
     $data->{'dns'} = $hostname;
     $data->{'ip'}  = '0.0.0.0';
     $data->{'port'} = 10_050;
     $data->{'useip'} = 0;
     $data->{'status'} = 1; # 1 == disabled, i.e. not monitored
-    
+
     if($self->group_id()) {
         foreach my $group_id (@{$self->group_id()}) {
             push(@{$data->{'groups'}}, {
@@ -69,7 +70,7 @@ sub execute {
             });
         }
     }
-    
+
     if($self->template_id()) {
         foreach my $tpl_id (@{$self->template_id()}) {
             push(@{$data->{'templates'}}, {
@@ -77,23 +78,23 @@ sub execute {
             });
         }
     }
-    
+
     if($self->proxy_id()) {
         $data->{'proxy_hostid'} = $self->proxy_id();
     }
-    
+
     if($self->macros()) {
         foreach my $mname (keys %{$self->macros()}) {
             my $key = $self->macros()->{$mname}->{'key'};
             my $value = $self->macros()->{$mname}->{'value'};
-            
+
             push(@{$data->{'macros'}}, {
                 'macro'     => $key,
                 'value'     => $value,
             });
         }
     }
-    
+
     if($self->sapi()->host_update($hostname,$data)) {
         $self->logger()->log( message => 'Created host: '.$hostname, level => 'debug', );
         return 1;

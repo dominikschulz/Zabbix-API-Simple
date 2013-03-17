@@ -53,12 +53,12 @@ has '_api' => (
 # initializers ...
 sub _init_api {
     my $self = shift;
-    
+
     my $API = Zabbix::API::->new(
         'server'    => $self->url(),
         'verbosity' => 0,
     );
-    
+
     try {
         $API->login(
             user        => $self->username(),
@@ -68,15 +68,15 @@ sub _init_api {
     } catch {
         $self->logger()->log( message => 'Login to Zabbix failed: '.$_, level => 'error', );
     };
-    
+
     return $API;
 }
 
 sub DEMOLISH {
     my $self = shift;
-    
+
     $self->_api()->logout();
-    
+
     return 1;
 }
 
@@ -85,9 +85,9 @@ sub host_create {
     my $self = shift;
     my $hostname = shift;
     my $data = shift;
-    
+
     $data->{'host'} = $hostname;
-    
+
     my $success = try {
         my $Host = Zabbix::API::Host::->new(
             'root'  => $self->_api(),
@@ -99,7 +99,7 @@ sub host_create {
     } catch {
         $self->logger()->log( message => 'Failed to create host: '.$_, level => 'error', );
     };
-    
+
     if($success) {
         return 1;
     } else {
@@ -111,10 +111,10 @@ sub host_delete {
     my $self = shift;
     my $hostname = shift;
     my $search = shift || {};
-    
+
     my $params = {};
     $params->{'filter'}->{'host'} = $hostname; # primary search field!
-    
+
     # additional search parameters
     # see http://www.zabbix.com/documentation/1.8/api/host/get
     foreach my $key (qw(nodeids groupids hostids templateids itemids triggerids graphids proxyids)) {
@@ -122,15 +122,15 @@ sub host_delete {
             $params->{$key} = $search->{$key};
         }
     }
-    
+
     my $success = try {
         my $Host = $self->_api()->fetch('Host', params => $params)->[0];
-        
+
         if($Host) {
             if($Host->name() ne $hostname) {
                 die('Got wrong host from Zabbix: '.$Host->name().' instead of '.$hostname);
             }
-            
+
             $Host->delete()
                 or die('Could not delete host on server');
             $self->logger()->log( message => 'Deleted '.$hostname, level => 'debug', );
@@ -141,7 +141,7 @@ sub host_delete {
     } catch {
         $self->logger()->log( message => 'Failed to delete host: '.$_, level => 'error', );
     };
-    
+
     if($success) {
         return 1;
     } else {
@@ -153,9 +153,9 @@ sub host_update {
     my $self = shift;
     my $hostname = shift;
     my $data = shift;
-    
+
     $data->{'host'} = $hostname;
-    
+
     my $success = try {
         my $Host = Zabbix::API::Host::->new(
             'root'  => $self->_api(),
@@ -167,7 +167,7 @@ sub host_update {
     } catch {
         $self->logger()->log( message => 'Failed to update host: '.$_, level => 'error', );
     };
-    
+
     if($success) {
         return 1;
     } else {

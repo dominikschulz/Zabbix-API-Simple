@@ -1,4 +1,5 @@
 package Zabbix::API::Simple::Web::Plugin::EnableHostDerived;
+# ABSTRACT: Example plugin to enable an host via alias
 
 use 5.010_000;
 use mro 'c3';

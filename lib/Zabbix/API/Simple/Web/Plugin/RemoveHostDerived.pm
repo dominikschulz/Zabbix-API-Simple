@@ -1,4 +1,5 @@
 package Zabbix::API::Simple::Web::Plugin::RemoveHostDerived;
+# ABSTRACT: example plugin to remove an host via alias
 
 use 5.010_000;
 use mro 'c3';

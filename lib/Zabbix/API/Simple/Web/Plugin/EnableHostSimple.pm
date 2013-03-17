@@ -1,4 +1,5 @@
 package Zabbix::API::Simple::Web::Plugin::EnableHostSimple;
+# ABSTRACT: Example plugin to enable an host
 
 use 5.010_000;
 use mro 'c3';
@@ -27,14 +28,14 @@ sub _init_alias { return 'enable_host_simple'; }
 sub execute {
     my $self = shift;
     my $request = shift;
-    
+
     return unless $request->{'hostname'};
     my $hostname = $request->{'hostname'};
-    
+
     my $data = {};
-    
+
     $data->{'status'} = 0; # 1 == disabled, i.e. not monitored
-    
+
     if($self->sapi()->host_update($hostname,$data)) {
         return 1;
     }

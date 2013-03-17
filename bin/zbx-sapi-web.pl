@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+# PODNAME: zbx-sapi-web.pl
+# ABSTRACT: Zabbix API Simple CGI Endpoint
 use strict;
 use warnings;
 

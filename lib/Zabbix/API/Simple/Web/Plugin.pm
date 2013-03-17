@@ -55,14 +55,14 @@ has 'alias' => (
 # initializers ...
 sub _init_sapi {
     my $self = shift;
-    
+
     my $SAPI = Zabbix::API::Simple::->new({
         'username'  => $self->config()->get('Zabbix::API::username'),
         'password'  => $self->config()->get('Zabbix::API::password'),
         'url'       => $self->config()->get('Zabbix::API::url'),
         'logger'    => $self->logger(),
     });
-    
+
     return $SAPI;
 }
 

@@ -1,4 +1,5 @@
 package Zabbix::API::Simple::Web::Plugin::RemoveHostSimple;
+# ABSTRACT: Example plugin to remove an host
 
 use 5.010_000;
 use mro 'c3';
@@ -31,15 +32,15 @@ sub _init_alias { return 'remove_host_simple'; }
 sub execute {
     my $self = shift;
     my $request = shift;
-    
+
     return unless $request->{'hostname'};
     my $hostname = $request->{'hostname'};
-    
+
     my $filter = {};
     if(defined($self->group_id())) {
         $filter->{'groupids'} = $self->group_id();
     }
-    
+
     if($self->sapi()->host_delete($hostname,$filter)) {
         $self->logger()->log( message => 'Deleted host: '.$hostname, level => 'debug', );
         return 1;

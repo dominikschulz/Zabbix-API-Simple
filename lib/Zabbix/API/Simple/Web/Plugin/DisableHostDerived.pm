@@ -1,4 +1,5 @@
 package Zabbix::API::Simple::Web::Plugin::DisableHostDerived;
+# ABSTRACT: Example plugin to disable an host via alias
 
 use 5.010_000;
 use mro 'c3';

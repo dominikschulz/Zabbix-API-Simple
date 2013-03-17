@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+# PODNAME: zbx-sapi
+# ABSTRACT: Zabbix API Simple CLI
 use strict;
 use warnings;
 

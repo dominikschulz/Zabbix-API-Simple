@@ -41,12 +41,12 @@ has 'group' => (
 # your code here ...
 sub execute {
     my $self = shift;
-    
+
     my $filter = {};
     if(defined($self->group())) {
         $filter->{'groupids'} = $self->group();
     }
-    
+
     return $self->sapi()->host_delete($self->name(),$filter);
 }
 

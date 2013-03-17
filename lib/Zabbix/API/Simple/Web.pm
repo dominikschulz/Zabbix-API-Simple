@@ -62,7 +62,7 @@ sub _init_fields {
 
 sub _init_key {
     my $self = shift;
-    
+
     return $self->config()->get('Zabbix::API::Simple::key');
 }
 
@@ -163,12 +163,12 @@ sub _handle_request {
     my $mode = $request->{'mode'};
     my $key  = $request->{'key'};
     my $ver  = $request->{'v'};
-    
+
     # Check requested API version
     if(!$ver || $ver ne '1') {
         return [ 400, [ 'Content-Type', 'text/plain' ], ['Bad Request - Invalid version'] ];
     }
-    
+
     # Check API key
     if(!$self->_key()) {
         return [ 500, [ 'Content-Type', 'text/plain' ], ['Bad Configuration'] ];
